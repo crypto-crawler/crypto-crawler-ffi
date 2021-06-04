@@ -14,10 +14,16 @@ pub enum MarketType {
     InverseFuture,
     LinearSwap,
     InverseSwap,
-    Option,
+
+    AmericanOption,
+    EuropeanOption,
 
     QuantoFuture,
     QuantoSwap,
+
+    Move,
+    #[allow(clippy::upper_case_acronyms)]
+    BVOL,
 }
 
 impl MarketType {
@@ -29,9 +35,12 @@ impl MarketType {
             MarketType::InverseFuture => crypto_crawler::MarketType::InverseFuture,
             MarketType::LinearSwap => crypto_crawler::MarketType::LinearSwap,
             MarketType::InverseSwap => crypto_crawler::MarketType::InverseSwap,
-            MarketType::Option => crypto_crawler::MarketType::Option,
+            MarketType::AmericanOption => crypto_crawler::MarketType::AmericanOption,
+            MarketType::EuropeanOption => crypto_crawler::MarketType::EuropeanOption,
             MarketType::QuantoFuture => crypto_crawler::MarketType::QuantoFuture,
             MarketType::QuantoSwap => crypto_crawler::MarketType::QuantoSwap,
+            MarketType::Move => crypto_crawler::MarketType::Move,
+            MarketType::BVOL => crypto_crawler::MarketType::BVOL,
         }
     }
 
@@ -43,9 +52,12 @@ impl MarketType {
             crypto_crawler::MarketType::InverseFuture => MarketType::InverseFuture,
             crypto_crawler::MarketType::LinearSwap => MarketType::LinearSwap,
             crypto_crawler::MarketType::InverseSwap => MarketType::InverseSwap,
-            crypto_crawler::MarketType::Option => MarketType::Option,
+            crypto_crawler::MarketType::AmericanOption => MarketType::AmericanOption,
+            crypto_crawler::MarketType::EuropeanOption => MarketType::EuropeanOption,
             crypto_crawler::MarketType::QuantoFuture => MarketType::QuantoFuture,
             crypto_crawler::MarketType::QuantoSwap => MarketType::QuantoSwap,
+            crypto_crawler::MarketType::Move => MarketType::Move,
+            crypto_crawler::MarketType::BVOL => MarketType::BVOL,
         }
     }
 }
@@ -58,9 +70,11 @@ pub enum MessageType {
     L2Snapshot,
     L3Event,
     L3Snapshot,
+    #[allow(clippy::upper_case_acronyms)]
     BBO,
     Ticker,
     Candlestick,
+    FundingRate,
 }
 
 impl MessageType {
@@ -75,6 +89,7 @@ impl MessageType {
             crypto_crawler::MessageType::BBO => MessageType::BBO,
             crypto_crawler::MessageType::Ticker => MessageType::Ticker,
             crypto_crawler::MessageType::Candlestick => MessageType::Candlestick,
+            crypto_crawler::MessageType::FundingRate => MessageType::FundingRate,
         }
     }
 }
@@ -88,8 +103,6 @@ pub struct Message {
     pub market_type: MarketType,
     /// Message type
     pub msg_type: MessageType,
-    /// Exchange specific symbol, used by RESTful APIs and websocket
-    pub symbol: *const c_char,
     /// Unix timestamp in milliseconds
     pub received_at: u64,
     /// the original message
@@ -115,14 +128,12 @@ fn convert_symbols(symbols: *const *const c_char, num_symbols: usize) -> Vec<Str
 
 fn process_msg(on_msg: extern "C" fn(*const Message), msg: crypto_crawler::Message) {
     let exchange_cstring = CString::new(msg.exchange).unwrap();
-    let symbol_cstring = CString::new(msg.symbol).unwrap();
     let json_cstring = CString::new(msg.json).unwrap();
 
     let msg_ffi = Message {
         exchange: exchange_cstring.as_ptr(),
         market_type: MarketType::from_rust(msg.market_type),
         msg_type: MessageType::from_rust(msg.msg_type),
-        symbol: symbol_cstring.as_ptr(),
         received_at: msg.received_at,
         json: json_cstring.as_ptr(),
     };

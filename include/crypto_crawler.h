@@ -21,9 +21,12 @@ typedef enum MarketType {
     InverseFuture,
     LinearSwap,
     InverseSwap,
-    Option,
+    AmericanOption,
+    EuropeanOption,
     QuantoFuture,
     QuantoSwap,
+    Move,
+    BVOL,
 } MarketType;
 
 /**
@@ -38,6 +41,7 @@ typedef enum MessageType {
     BBO,
     Ticker,
     Candlestick,
+    FundingRate,
 } MessageType;
 
 /**
@@ -56,10 +60,6 @@ typedef struct Message {
      * Message type
      */
     enum MessageType msg_type;
-    /**
-     * Exchange specific symbol, used by RESTful APIs and websocket
-     */
-    const char *symbol;
     /**
      * Unix timestamp in milliseconds
      */
