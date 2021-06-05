@@ -18,13 +18,13 @@ fn convert_symbols(symbols: *const *const c_char, num_symbols: usize) -> Vec<Str
         for i in 0..num_symbols {
             let c_str = unsafe {
                 let symbol_ptr: *const c_char = *(symbols.add(i));
-                assert!(!symbol_ptr.is_null());
+                debug_assert!(!symbol_ptr.is_null());
                 CStr::from_ptr(symbol_ptr)
             };
             arr.push(c_str.to_str().unwrap().to_string());
         }
     }
-    assert_eq!(arr.len(), num_symbols);
+    debug_assert_eq!(arr.len(), num_symbols);
     arr
 }
 
@@ -62,7 +62,7 @@ pub extern "C" fn crawl_trade(
     duration: u64,
 ) {
     let c_str = unsafe {
-        assert!(!exchange.is_null());
+        debug_assert!(!exchange.is_null());
         CStr::from_ptr(exchange)
     };
     let exchange_rust = c_str.to_str().unwrap();
@@ -97,7 +97,7 @@ pub extern "C" fn crawl_l2_event(
     duration: u64,
 ) {
     let c_str = unsafe {
-        assert!(!exchange.is_null());
+        debug_assert!(!exchange.is_null());
         CStr::from_ptr(exchange)
     };
     let exchange_rust = c_str.to_str().unwrap();
@@ -133,7 +133,7 @@ pub extern "C" fn crawl_l2_snapshot(
     duration: u64,
 ) {
     let c_str = unsafe {
-        assert!(!exchange.is_null());
+        debug_assert!(!exchange.is_null());
         CStr::from_ptr(exchange)
     };
     let exchange_rust = c_str.to_str().unwrap();
@@ -169,7 +169,7 @@ pub extern "C" fn crawl_l3_event(
     duration: u64,
 ) {
     let c_str = unsafe {
-        assert!(!exchange.is_null());
+        debug_assert!(!exchange.is_null());
         CStr::from_ptr(exchange)
     };
     let exchange_rust = c_str.to_str().unwrap();
@@ -205,7 +205,7 @@ pub extern "C" fn crawl_l3_snapshot(
     duration: u64,
 ) {
     let c_str = unsafe {
-        assert!(!exchange.is_null());
+        debug_assert!(!exchange.is_null());
         CStr::from_ptr(exchange)
     };
     let exchange_rust = c_str.to_str().unwrap();
