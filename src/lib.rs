@@ -1,113 +1,15 @@
 #![allow(clippy::not_unsafe_ptr_arg_deref)]
+mod msg;
+pub use msg::*;
+
+mod market_type;
+pub use market_type::*;
+
 use std::{
     ffi::{CStr, CString},
     os::raw::c_char,
     sync::{Arc, Mutex},
 };
-
-/// Market type.
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub enum MarketType {
-    Spot,
-    LinearFuture,
-    InverseFuture,
-    LinearSwap,
-    InverseSwap,
-
-    AmericanOption,
-    EuropeanOption,
-
-    QuantoFuture,
-    QuantoSwap,
-
-    Move,
-    #[allow(clippy::upper_case_acronyms)]
-    BVOL,
-}
-
-impl MarketType {
-    // Converts C MarketType to Rust MarketType
-    pub fn to_rust(&self) -> crypto_crawler::MarketType {
-        match *self {
-            MarketType::Spot => crypto_crawler::MarketType::Spot,
-            MarketType::LinearFuture => crypto_crawler::MarketType::LinearFuture,
-            MarketType::InverseFuture => crypto_crawler::MarketType::InverseFuture,
-            MarketType::LinearSwap => crypto_crawler::MarketType::LinearSwap,
-            MarketType::InverseSwap => crypto_crawler::MarketType::InverseSwap,
-            MarketType::AmericanOption => crypto_crawler::MarketType::AmericanOption,
-            MarketType::EuropeanOption => crypto_crawler::MarketType::EuropeanOption,
-            MarketType::QuantoFuture => crypto_crawler::MarketType::QuantoFuture,
-            MarketType::QuantoSwap => crypto_crawler::MarketType::QuantoSwap,
-            MarketType::Move => crypto_crawler::MarketType::Move,
-            MarketType::BVOL => crypto_crawler::MarketType::BVOL,
-        }
-    }
-
-    // Converts Rust MarketType to C MarketType
-    pub fn from_rust(market_type: crypto_crawler::MarketType) -> Self {
-        match market_type {
-            crypto_crawler::MarketType::Spot => MarketType::Spot,
-            crypto_crawler::MarketType::LinearFuture => MarketType::LinearFuture,
-            crypto_crawler::MarketType::InverseFuture => MarketType::InverseFuture,
-            crypto_crawler::MarketType::LinearSwap => MarketType::LinearSwap,
-            crypto_crawler::MarketType::InverseSwap => MarketType::InverseSwap,
-            crypto_crawler::MarketType::AmericanOption => MarketType::AmericanOption,
-            crypto_crawler::MarketType::EuropeanOption => MarketType::EuropeanOption,
-            crypto_crawler::MarketType::QuantoFuture => MarketType::QuantoFuture,
-            crypto_crawler::MarketType::QuantoSwap => MarketType::QuantoSwap,
-            crypto_crawler::MarketType::Move => MarketType::Move,
-            crypto_crawler::MarketType::BVOL => MarketType::BVOL,
-        }
-    }
-}
-
-/// The type of a message
-#[repr(C)]
-pub enum MessageType {
-    Trade,
-    L2Event,
-    L2Snapshot,
-    L3Event,
-    L3Snapshot,
-    #[allow(clippy::upper_case_acronyms)]
-    BBO,
-    Ticker,
-    Candlestick,
-    FundingRate,
-}
-
-impl MessageType {
-    // Converts Rust MessageType to C MessageType
-    pub fn from_rust(msg_type: crypto_crawler::MessageType) -> Self {
-        match msg_type {
-            crypto_crawler::MessageType::Trade => MessageType::Trade,
-            crypto_crawler::MessageType::L2Event => MessageType::L2Event,
-            crypto_crawler::MessageType::L2Snapshot => MessageType::L2Snapshot,
-            crypto_crawler::MessageType::L3Event => MessageType::L3Event,
-            crypto_crawler::MessageType::L3Snapshot => MessageType::L3Snapshot,
-            crypto_crawler::MessageType::BBO => MessageType::BBO,
-            crypto_crawler::MessageType::Ticker => MessageType::Ticker,
-            crypto_crawler::MessageType::Candlestick => MessageType::Candlestick,
-            crypto_crawler::MessageType::FundingRate => MessageType::FundingRate,
-        }
-    }
-}
-
-/// Message represents messages received by crawlers.
-#[repr(C)]
-pub struct Message {
-    /// The exchange name, unique for each exchage
-    pub exchange: *const c_char,
-    /// Market type
-    pub market_type: MarketType,
-    /// Message type
-    pub msg_type: MessageType,
-    /// Unix timestamp in milliseconds
-    pub received_at: u64,
-    /// the original message
-    pub json: *const c_char,
-}
 
 // Converts an array of symbols from C to rust
 fn convert_symbols(symbols: *const *const c_char, num_symbols: usize) -> Vec<String> {
