@@ -73,17 +73,22 @@ pub extern "C" fn crawl_trade(
         process_msg(on_msg, msg);
     }));
 
-    crypto_crawler::crawl_trade(
-        exchange_rust,
-        market_type.to_rust(),
-        if symbols_rust.is_empty() {
-            None
-        } else {
-            Some(&symbols_rust)
-        },
-        on_msg_ext,
-        if duration > 0 { Some(duration) } else { None },
-    );
+    let result = std::panic::catch_unwind(|| {
+        crypto_crawler::crawl_trade(
+            exchange_rust,
+            market_type.to_rust(),
+            if symbols_rust.is_empty() {
+                None
+            } else {
+                Some(&symbols_rust)
+            },
+            on_msg_ext,
+            if duration > 0 { Some(duration) } else { None },
+        );
+    });
+    if let Err(err) = result {
+        eprintln!("{:?}", err);
+    }
 }
 
 /// Crawl level2 orderbook update events.
@@ -108,17 +113,22 @@ pub extern "C" fn crawl_l2_event(
         process_msg(on_msg, msg);
     }));
 
-    crypto_crawler::crawl_l2_event(
-        exchange_rust,
-        market_type.to_rust(),
-        if symbols_rust.is_empty() {
-            None
-        } else {
-            Some(&symbols_rust)
-        },
-        on_msg_ext,
-        if duration > 0 { Some(duration) } else { None },
-    );
+    let result = std::panic::catch_unwind(|| {
+        crypto_crawler::crawl_l2_event(
+            exchange_rust,
+            market_type.to_rust(),
+            if symbols_rust.is_empty() {
+                None
+            } else {
+                Some(&symbols_rust)
+            },
+            on_msg_ext,
+            if duration > 0 { Some(duration) } else { None },
+        );
+    });
+    if let Err(err) = result {
+        eprintln!("{:?}", err);
+    }
 }
 
 /// Crawl level2 orderbook snapshots through RESTful APIs.
@@ -144,18 +154,23 @@ pub extern "C" fn crawl_l2_snapshot(
         process_msg(on_msg, msg);
     }));
 
-    crypto_crawler::crawl_l2_snapshot(
-        exchange_rust,
-        market_type.to_rust(),
-        if symbols_rust.is_empty() {
-            None
-        } else {
-            Some(&symbols_rust)
-        },
-        on_msg_ext,
-        Some(interval),
-        if duration > 0 { Some(duration) } else { None },
-    );
+    let result = std::panic::catch_unwind(|| {
+        crypto_crawler::crawl_l2_snapshot(
+            exchange_rust,
+            market_type.to_rust(),
+            if symbols_rust.is_empty() {
+                None
+            } else {
+                Some(&symbols_rust)
+            },
+            on_msg_ext,
+            Some(interval),
+            if duration > 0 { Some(duration) } else { None },
+        );
+    });
+    if let Err(err) = result {
+        eprintln!("{:?}", err);
+    }
 }
 
 /// Crawl level3 orderbook update events.
@@ -180,17 +195,22 @@ pub extern "C" fn crawl_l3_event(
         process_msg(on_msg, msg);
     }));
 
-    crypto_crawler::crawl_l3_event(
-        exchange_rust,
-        market_type.to_rust(),
-        if symbols_rust.is_empty() {
-            None
-        } else {
-            Some(&symbols_rust)
-        },
-        on_msg_ext,
-        if duration > 0 { Some(duration) } else { None },
-    );
+    let result = std::panic::catch_unwind(|| {
+        crypto_crawler::crawl_l3_event(
+            exchange_rust,
+            market_type.to_rust(),
+            if symbols_rust.is_empty() {
+                None
+            } else {
+                Some(&symbols_rust)
+            },
+            on_msg_ext,
+            if duration > 0 { Some(duration) } else { None },
+        );
+    });
+    if let Err(err) = result {
+        eprintln!("{:?}", err);
+    }
 }
 
 /// Crawl level3 orderbook snapshots through RESTful APIs.
@@ -216,16 +236,21 @@ pub extern "C" fn crawl_l3_snapshot(
         process_msg(on_msg, msg);
     }));
 
-    crypto_crawler::crawl_l3_snapshot(
-        exchange_rust,
-        market_type.to_rust(),
-        if symbols_rust.is_empty() {
-            None
-        } else {
-            Some(&symbols_rust)
-        },
-        on_msg_ext,
-        Some(interval),
-        if duration > 0 { Some(duration) } else { None },
-    );
+    let result = std::panic::catch_unwind(|| {
+        crypto_crawler::crawl_l3_snapshot(
+            exchange_rust,
+            market_type.to_rust(),
+            if symbols_rust.is_empty() {
+                None
+            } else {
+                Some(&symbols_rust)
+            },
+            on_msg_ext,
+            Some(interval),
+            if duration > 0 { Some(duration) } else { None },
+        );
+    });
+    if let Err(err) = result {
+        eprintln!("{:?}", err);
+    }
 }
