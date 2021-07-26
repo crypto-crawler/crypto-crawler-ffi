@@ -61,11 +61,10 @@ pub extern "C" fn crawl_trade(
     on_msg: extern "C" fn(*const Message),
     duration: u64,
 ) {
-    let c_str = unsafe {
+    let exchange_rust = unsafe {
         debug_assert!(!exchange.is_null());
-        CStr::from_ptr(exchange)
+        CStr::from_ptr(exchange).to_str().unwrap()
     };
-    let exchange_rust = c_str.to_str().unwrap();
 
     let symbols_rust = convert_symbols(symbols, num_symbols);
 
@@ -101,11 +100,10 @@ pub extern "C" fn crawl_l2_event(
     on_msg: extern "C" fn(*const Message),
     duration: u64,
 ) {
-    let c_str = unsafe {
+    let exchange_rust = unsafe {
         debug_assert!(!exchange.is_null());
-        CStr::from_ptr(exchange)
+        CStr::from_ptr(exchange).to_str().unwrap()
     };
-    let exchange_rust = c_str.to_str().unwrap();
 
     let symbols_rust = convert_symbols(symbols, num_symbols);
 
@@ -142,11 +140,10 @@ pub extern "C" fn crawl_l2_snapshot(
     interval: u64,
     duration: u64,
 ) {
-    let c_str = unsafe {
+    let exchange_rust = unsafe {
         debug_assert!(!exchange.is_null());
-        CStr::from_ptr(exchange)
+        CStr::from_ptr(exchange).to_str().unwrap()
     };
-    let exchange_rust = c_str.to_str().unwrap();
 
     let symbols_rust = convert_symbols(symbols, num_symbols);
 
@@ -183,11 +180,10 @@ pub extern "C" fn crawl_l3_event(
     on_msg: extern "C" fn(*const Message),
     duration: u64,
 ) {
-    let c_str = unsafe {
+    let exchange_rust = unsafe {
         debug_assert!(!exchange.is_null());
-        CStr::from_ptr(exchange)
+        CStr::from_ptr(exchange).to_str().unwrap()
     };
-    let exchange_rust = c_str.to_str().unwrap();
 
     let symbols_rust = convert_symbols(symbols, num_symbols);
 
@@ -224,11 +220,10 @@ pub extern "C" fn crawl_l3_snapshot(
     interval: u64,
     duration: u64,
 ) {
-    let c_str = unsafe {
+    let exchange_rust = unsafe {
         debug_assert!(!exchange.is_null());
-        CStr::from_ptr(exchange)
+        CStr::from_ptr(exchange).to_str().unwrap()
     };
-    let exchange_rust = c_str.to_str().unwrap();
 
     let symbols_rust = convert_symbols(symbols, num_symbols);
 
