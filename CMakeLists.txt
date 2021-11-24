@@ -24,7 +24,7 @@ add_custom_target(crypto_crawler_cargo ALL
 add_library (crypto_crawler STATIC IMPORTED)
 add_dependencies (crypto_crawler crypto_crawler_cargo)
 set_target_properties(crypto_crawler PROPERTIES IMPORTED_GLOBAL TRUE)
-set_target_properties (crypto_crawler PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_BINARY_DIR})
+set_target_properties (crypto_crawler PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/libcrypto_crawler.a")
 
 add_library(crypto_crawler::crypto_crawler ALIAS crypto_crawler)
 
