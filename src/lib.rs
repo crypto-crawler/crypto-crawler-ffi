@@ -7,24 +7,24 @@ use msg::Message;
 
 use std::{
     ffi::{CStr, CString},
-    os::raw::c_char,
+    os::raw::{c_char, c_uint},
     sync::mpsc::Receiver,
 };
 
 // Converts an array of symbols from C to rust
-fn convert_symbols(symbols: *const *const c_char, num_symbols: usize) -> Vec<String> {
+fn convert_symbols(symbols: *const *const c_char, num_symbols: c_uint) -> Vec<String> {
     let mut arr = Vec::<String>::new();
     if num_symbols > 0 {
         for i in 0..num_symbols {
             let c_str = unsafe {
-                let symbol_ptr: *const c_char = *(symbols.add(i));
+                let symbol_ptr: *const c_char = *(symbols.add(i as usize));
                 debug_assert!(!symbol_ptr.is_null());
                 CStr::from_ptr(symbol_ptr)
             };
             arr.push(c_str.to_str().unwrap().to_string());
         }
     }
-    debug_assert_eq!(arr.len(), num_symbols);
+    debug_assert_eq!(arr.len(), num_symbols as usize);
     arr
 }
 
@@ -95,7 +95,7 @@ pub extern "C" fn crawl_trade(
     exchange: *const c_char,
     market_type: MarketType,
     symbols: *const *const c_char,
-    num_symbols: usize,
+    num_symbols: c_uint,
     on_msg: extern "C" fn(*const Message),
     duration: u64,
 ) {
@@ -116,7 +116,7 @@ pub extern "C" fn crawl_l2_event(
     exchange: *const c_char,
     market_type: MarketType,
     symbols: *const *const c_char,
-    num_symbols: usize,
+    num_symbols: c_uint,
     on_msg: extern "C" fn(*const Message),
     duration: u64,
 ) {
@@ -137,7 +137,7 @@ pub extern "C" fn crawl_l3_event(
     exchange: *const c_char,
     market_type: MarketType,
     symbols: *const *const c_char,
-    num_symbols: usize,
+    num_symbols: c_uint,
     on_msg: extern "C" fn(*const Message),
     duration: u64,
 ) {
@@ -158,7 +158,7 @@ pub extern "C" fn crawl_l2_snapshot(
     exchange: *const c_char,
     market_type: MarketType,
     symbols: *const *const c_char,
-    num_symbols: usize,
+    num_symbols: c_uint,
     on_msg: extern "C" fn(*const Message),
     duration: u64,
 ) {
@@ -179,7 +179,7 @@ pub extern "C" fn crawl_bbo(
     exchange: *const c_char,
     market_type: MarketType,
     symbols: *const *const c_char,
-    num_symbols: usize,
+    num_symbols: c_uint,
     on_msg: extern "C" fn(*const Message),
     duration: u64,
 ) {
@@ -200,7 +200,7 @@ pub extern "C" fn crawl_l2_topk(
     exchange: *const c_char,
     market_type: MarketType,
     symbols: *const *const c_char,
-    num_symbols: usize,
+    num_symbols: c_uint,
     on_msg: extern "C" fn(*const Message),
     duration: u64,
 ) {
@@ -221,7 +221,7 @@ pub extern "C" fn crawl_l3_snapshot(
     exchange: *const c_char,
     market_type: MarketType,
     symbols: *const *const c_char,
-    num_symbols: usize,
+    num_symbols: c_uint,
     on_msg: extern "C" fn(*const Message),
     duration: u64,
 ) {
@@ -245,7 +245,7 @@ pub extern "C" fn crawl_ticker(
     exchange: *const c_char,
     market_type: MarketType,
     symbols: *const *const c_char,
-    num_symbols: usize,
+    num_symbols: c_uint,
     on_msg: extern "C" fn(*const Message),
     duration: u64,
 ) {
@@ -266,7 +266,7 @@ pub extern "C" fn crawl_funding_rate(
     exchange: *const c_char,
     market_type: MarketType,
     symbols: *const *const c_char,
-    num_symbols: usize,
+    num_symbols: c_uint,
     on_msg: extern "C" fn(*const Message),
     duration: u64,
 ) {
@@ -290,8 +290,8 @@ pub extern "C" fn crawl_candlestick(
     exchange: *const c_char,
     market_type: MarketType,
     symbols: *const *const c_char,
-    intervals: *const usize,
-    num_symbols: usize,
+    intervals: *const c_uint,
+    num_symbols: c_uint,
     on_msg: extern "C" fn(*const Message),
     duration: u64,
 ) {
@@ -305,18 +305,18 @@ pub extern "C" fn crawl_candlestick(
     if num_symbols > 0 {
         for i in 0..num_symbols {
             let c_str = unsafe {
-                let symbol_ptr: *const c_char = *(symbols.add(i));
+                let symbol_ptr: *const c_char = *(symbols.add(i as usize));
                 debug_assert!(!symbol_ptr.is_null());
                 CStr::from_ptr(symbol_ptr)
             };
             symbols_rust.push(c_str.to_str().unwrap().to_string());
 
-            let interval: usize = unsafe { *(intervals.add(i)) };
+            let interval: usize = unsafe { *(intervals.add(i as usize)) as usize };
             intervals_rust.push(interval);
         }
     }
-    debug_assert_eq!(symbols_rust.len(), num_symbols);
-    debug_assert_eq!(intervals_rust.len(), num_symbols);
+    debug_assert_eq!(symbols_rust.len(), num_symbols as usize);
+    debug_assert_eq!(intervals_rust.len(), num_symbols as usize);
 
     let symbol_interval_list: Vec<(String, usize)> = {
         symbols_rust
@@ -380,7 +380,7 @@ pub extern "C" fn subscribe_symbol(
     market_type: MarketType,
     symbol: *const c_char,
     msg_types: *const MessageType,
-    num_msg_types: usize,
+    num_msg_types: c_uint,
     on_msg: extern "C" fn(*const c_char),
     duration: u64,
 ) {
@@ -396,11 +396,11 @@ pub extern "C" fn subscribe_symbol(
         let mut arr = Vec::<MessageType>::new();
         if num_msg_types > 0 {
             for i in 0..num_msg_types {
-                let msg_type: MessageType = unsafe { *(msg_types.add(i)) };
+                let msg_type: MessageType = unsafe { *(msg_types.add(i as usize)) };
                 arr.push(msg_type);
             }
         }
-        debug_assert_eq!(arr.len(), num_msg_types);
+        debug_assert_eq!(arr.len(), num_msg_types as usize);
         arr
     };
 
