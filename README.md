@@ -13,14 +13,19 @@ brew install openssl@1.1
 cargo build --release
 ```
 
-For Windows and Linux:
+On Ubuntu:
 
 ```bash
-cargo install cross
+sudo apt install libssl-dev pkg-config
+cargo build --release
+```
 
-cross build --target x86_64-unknown-linux-gnu --release
+Or build via cmake:
 
-cross build --target x86_64-pc-windows-gnu --release
+```bash
+$ mkdir build && cd build
+$ cmake -DCMAKE_BUILD_TYPE=Release cmake ..
+$ make
 ```
 
 ## References
@@ -34,3 +39,8 @@ cross build --target x86_64-pc-windows-gnu --release
 - [The Rust FFI Omnibus](http://jakegoulding.com/rust-ffi-omnibus/)
 - [Calling Rust From Python](https://bheisler.github.io/post/calling-rust-in-python/)
 - [Writing Python Extensions in Rust](https://kushaldas.in/posts/writing-python-extensions-in-rust.html)
+- [Building a Dual Shared and Static Library with CMake](https://alexreinking.com/blog/building-a-dual-shared-and-static-library-with-cmake.html)
+- [Building a rust library through CMake and using it as imported library target](https://stackoverflow.com/q/65190404/381712)
+- [A guide for doing FFI using Rust](https://michael-f-bryan.github.io/rust-ffi-guide/)
+- [Cmake line by line - creating a header-only library
+](https://dominikberner.ch/cmake-interface-lib/)
