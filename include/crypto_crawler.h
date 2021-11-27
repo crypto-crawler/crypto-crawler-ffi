@@ -11,14 +11,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-
 #include "crypto_market_type.h"
 #include "crypto_msg_type.h"
 
 /**
  * Message represents messages received by crawlers.
  */
-typedef struct Message {
+typedef struct {
   /**
    * The exchange name, unique for each exchage
    */
@@ -26,11 +25,11 @@ typedef struct Message {
   /**
    * Market type
    */
-  enum MarketType market_type;
+  MarketType market_type;
   /**
    * Message type
    */
-  enum MessageType msg_type;
+  MessageType msg_type;
   /**
    * Unix timestamp in milliseconds
    */
@@ -58,70 +57,70 @@ extern "C" {
  * - `duration` How many seconds to run, only useful in testing, 0 means run forever
  */
 void crawl_trade(const char *exchange,
-                 enum MarketType market_type,
+                 MarketType market_type,
                  const char *const *symbols,
                  unsigned int num_symbols,
-                 void (*on_msg)(const struct Message*),
+                 void (*on_msg)(const Message*),
                  uint64_t duration);
 
 /**
  * Crawl level2 orderbook update events.
  */
 void crawl_l2_event(const char *exchange,
-                    enum MarketType market_type,
+                    MarketType market_type,
                     const char *const *symbols,
                     unsigned int num_symbols,
-                    void (*on_msg)(const struct Message*),
+                    void (*on_msg)(const Message*),
                     uint64_t duration);
 
 /**
  * Crawl level3 orderbook update events.
  */
 void crawl_l3_event(const char *exchange,
-                    enum MarketType market_type,
+                    MarketType market_type,
                     const char *const *symbols,
                     unsigned int num_symbols,
-                    void (*on_msg)(const struct Message*),
+                    void (*on_msg)(const Message*),
                     uint64_t duration);
 
 /**
  * Crawl level2 orderbook snapshots through RESTful APIs.
  */
 void crawl_l2_snapshot(const char *exchange,
-                       enum MarketType market_type,
+                       MarketType market_type,
                        const char *const *symbols,
                        unsigned int num_symbols,
-                       void (*on_msg)(const struct Message*),
+                       void (*on_msg)(const Message*),
                        uint64_t duration);
 
 /**
  * Crawl best bid and ask.
  */
 void crawl_bbo(const char *exchange,
-               enum MarketType market_type,
+               MarketType market_type,
                const char *const *symbols,
                unsigned int num_symbols,
-               void (*on_msg)(const struct Message*),
+               void (*on_msg)(const Message*),
                uint64_t duration);
 
 /**
  * Crawl level2 orderbook top-k snapshots through websocket.
  */
 void crawl_l2_topk(const char *exchange,
-                   enum MarketType market_type,
+                   MarketType market_type,
                    const char *const *symbols,
                    unsigned int num_symbols,
-                   void (*on_msg)(const struct Message*),
+                   void (*on_msg)(const Message*),
                    uint64_t duration);
 
 /**
  * Crawl level3 orderbook snapshots through RESTful APIs.
  */
 void crawl_l3_snapshot(const char *exchange,
-                       enum MarketType market_type,
+                       MarketType market_type,
                        const char *const *symbols,
                        unsigned int num_symbols,
-                       void (*on_msg)(const struct Message*),
+                       void (*on_msg)(const Message*),
                        uint64_t duration);
 
 /**
@@ -131,20 +130,20 @@ void crawl_l3_snapshot(const char *exchange,
  * and updates the latest symbols every hour.
  */
 void crawl_ticker(const char *exchange,
-                  enum MarketType market_type,
+                  MarketType market_type,
                   const char *const *symbols,
                   unsigned int num_symbols,
-                  void (*on_msg)(const struct Message*),
+                  void (*on_msg)(const Message*),
                   uint64_t duration);
 
 /**
  * Crawl perpetual swap funding rates.
  */
 void crawl_funding_rate(const char *exchange,
-                        enum MarketType market_type,
+                        MarketType market_type,
                         const char *const *symbols,
                         unsigned int num_symbols,
-                        void (*on_msg)(const struct Message*),
+                        void (*on_msg)(const Message*),
                         uint64_t duration);
 
 /**
@@ -154,19 +153,19 @@ void crawl_funding_rate(const char *exchange,
  * 10 seconds to 3 minutes(if available) for all symbols.
  */
 void crawl_candlestick(const char *exchange,
-                       enum MarketType market_type,
+                       MarketType market_type,
                        const char *const *symbols,
                        const unsigned int *intervals,
                        unsigned int num_symbols,
-                       void (*on_msg)(const struct Message*),
+                       void (*on_msg)(const Message*),
                        uint64_t duration);
 
 /**
  * Crawl all open interest.
  */
 void crawl_open_interest(const char *exchange,
-                         enum MarketType market_type,
-                         void (*on_msg)(const struct Message*),
+                         MarketType market_type,
+                         void (*on_msg)(const Message*),
                          uint64_t duration);
 
 /**
@@ -177,9 +176,9 @@ void crawl_open_interest(const char *exchange,
  * String messages in `tx` are already parsed by `crypto-msg-parser`.
  */
 void subscribe_symbol(const char *exchange,
-                      enum MarketType market_type,
+                      MarketType market_type,
                       const char *symbol,
-                      const enum MessageType *msg_types,
+                      const MessageType *msg_types,
                       unsigned int num_msg_types,
                       void (*on_msg)(const char*),
                       uint64_t duration);
