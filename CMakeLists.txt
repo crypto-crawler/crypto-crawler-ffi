@@ -28,6 +28,8 @@ add_dependencies(crypto_crawler crypto_crawler_cargo)
 set_target_properties(
   crypto_crawler PROPERTIES IMPORTED_LOCATION
                             "${CMAKE_CURRENT_BINARY_DIR}/libcrypto_crawler.a")
+file(GLOB HEADER_FILES include/*.h)
+set_target_properties(crypto_crawler PROPERTIES PUBLIC_HEADER "${HEADER_FILES}")
 set_target_properties(crypto_crawler PROPERTIES INTERFACE_LINK_LIBRARIES
                                                 "pthread;ssl;crypto;dl")
 add_library(crypto_crawler::crypto_crawler ALIAS crypto_crawler)
