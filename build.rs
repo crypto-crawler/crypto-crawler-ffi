@@ -8,5 +8,5 @@ fn main() {
         let config = Config::from_file("cbindgen.toml").unwrap();
         cbindgen::generate_with_config(&crate_dir, config).unwrap()
     };
-    bindings.write_to_file("include/crypto_crawler.h");
+    bindings.write_to_file("include/crypto_crawler_ffi.h");
 }

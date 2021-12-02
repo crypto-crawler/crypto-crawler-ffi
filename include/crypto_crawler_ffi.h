@@ -1,7 +1,7 @@
 /* Licensed under Apache-2.0 */
 
-#ifndef CRYPTO_CRAWLER_H_
-#define CRYPTO_CRAWLER_H_
+#ifndef CRYPTO_CRAWLER_FFI_H_
+#define CRYPTO_CRAWLER_FFI_H_
 
 /* Generated with cbindgen:0.20.0 */
 
@@ -187,4 +187,4 @@ void subscribe_symbol(const char *exchange,
 } // extern "C"
 #endif // __cplusplus
 
-#endif /* CRYPTO_CRAWLER_H_ */
+#endif /* CRYPTO_CRAWLER_FFI_H_ */

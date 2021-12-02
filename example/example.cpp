@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "crypto_crawler.h"
+#include "crypto_crawler_ffi.h"
 
 void on_msg(const char *msg) { std::cout << msg << std::endl; }
 
