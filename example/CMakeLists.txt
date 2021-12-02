@@ -12,4 +12,4 @@ include_directories(${crypto_crawler_ffi_SOURCE_DIR}/include)
 
 add_executable (example example.cpp)
 
-target_link_libraries (example crypto_crawler_ffi)
+target_link_libraries (example PRIVATE crypto_crawler_ffi)
