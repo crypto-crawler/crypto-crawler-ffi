@@ -34,4 +34,6 @@ set_target_properties(crypto_crawler_ffi PROPERTIES INTERFACE_LINK_LIBRARIES
                                                 "pthread;ssl;crypto;dl")
 add_library(crypto_crawler_ffi::crypto_crawler_ffi ALIAS crypto_crawler_ffi)
 
-target_include_directories(crypto_crawler_ffi INTERFACE include/)
+target_include_directories(crypto_crawler_ffi INTERFACE
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
