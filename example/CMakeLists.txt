@@ -8,7 +8,6 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/soulmachine/crypto-crawler-ffi
     GIT_TAG main)
 FetchContent_MakeAvailable(crypto_crawler_ffi)
-include_directories(${crypto_crawler_ffi_SOURCE_DIR}/include)
 
 add_executable (example example.cpp)
 
