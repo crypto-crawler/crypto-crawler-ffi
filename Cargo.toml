@@ -1,6 +1,6 @@
 [package]
 name = "crypto-crawler-ffi"
-version = "3.2.6"
+version = "3.2.9"
 authors = ["soulmachine <soulmachine@gmail.com>"]
 edition = "2021"
 
@@ -8,7 +8,7 @@ edition = "2021"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-crypto-crawler = "3.2.6"
+crypto-crawler = "3.2.9"
 crypto-market-type = "1.0.5"
 crypto-msg-type = "1.0.3"
 serde_json = "1"
